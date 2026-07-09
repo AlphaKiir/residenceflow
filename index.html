@@ -95,7 +95,15 @@ var _total=_cl.length+(_ch.hasSdb?_slb.length:0),_ok=_okCl+(_ch.hasSdb?_okSlb:0)
 var _miss=_cl.map(function(_i,_n){return _rfFait(_i)?null:(_lsCh[_n]?_lsCh[_n].nom:null)}).filter(Boolean);
 if(_ch.hasSdb)_miss=_miss.concat(_slb.map(function(_i,_n){return _rfFait(_i)?null:(_lsSdb[_n]?_lsSdb[_n].nom:null)}).filter(Boolean));
 return{id:_ch.id,label:(!_ch.type||_ch.type==="chambre")?"Ch. "+_ch.id+(_ch.resident?" - "+_ch.resident:"")+(_ch.estDouble&&_ch.resident2?" & "+_ch.resident2:""):(_ch.nomEspace||"Espace "+_ch.id),statut:_ch.statut,checklist_ok:_ok,checklist_total:_total,items_manquants:_miss}});
-return{date:_rfTodayIso(),total:T.length,nb_faites:T.filter(function(_ch){return _ch.statut==="fait"}).length,non_faites:_nf}}
+return{date:_rfTodayIso(),total:T.length,nb_faites:T.filter(function(_ch){return _ch.statut==="fait"}).length,non_faites:_nf,faites:T.filter(function(_ch){return _ch.statut==="fait"}).map(function(_ch){return{id:_ch.id,label:(!_ch.type||_ch.type==="chambre")?"Ch. "+_ch.id+(_ch.resident?" - "+_ch.resident:"")+(_ch.estDouble&&_ch.resident2?" & "+_ch.resident2:""):(_ch.nomEspace||"Espace "+_ch.id),heure:_ch.heure||""}})}}
+function _rfRapFaites(_rp,_live,c,u){if(!_live||!_rp||!_rp.faites||!_rp.faites.length)return null;
+return (0,i.jsxs)("div",{style:{marginTop:"14px",borderTop:"1px solid "+c.borderSoft,paddingTop:"10px"},children:[
+(0,i.jsxs)("div",{style:{fontSize:"11px",fontWeight:700,letterSpacing:"0.4px",textTransform:"uppercase",color:c.textMuted,marginBottom:"6px"},children:["Termin\xE9es (",_rp.faites.length,")"]}),
+(0,i.jsx)("div",{children:_rp.faites.map(function(_ch,_idx){return (0,i.jsxs)("div",{onClick:function(){u&&u(_ch.id)},style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"7px 0",borderBottom:"1px solid "+c.borderSoft,fontSize:"13px",cursor:"pointer"},children:[
+(0,i.jsx)("span",{style:{fontWeight:500,color:c.text},children:_ch.label}),
+(0,i.jsxs)("span",{style:{display:"flex",alignItems:"center",gap:"8px"},children:[
+_ch.heure?(0,i.jsx)("span",{style:{fontSize:"11px",color:c.textMuted},children:_ch.heure}):null,
+(0,i.jsx)("span",{style:{background:"#D1FAE5",color:"#059669",padding:"2px 8px",borderRadius:"10px",fontSize:"11px",fontWeight:600},children:"\u2713 Fait"})]})]},_idx)})})]})}
 function _rfRapCard(_rp,_live,_open,_setOpen,c,u){if(!_rp)return null;var _key=_live?"__today__":_rp.date,_io=_open===_key,_all=_rp.nb_faites===_rp.total;
 return (0,i.jsxs)("div",{style:{background:c.bgCard,borderRadius:"14px",padding:"14px 18px",border:"1px solid "+(_live?(c.dark?"#7DD3C0":"#1B4F5C"):c.border),marginBottom:"18px"},children:[
 (0,i.jsxs)("div",{onClick:function(){_setOpen(function(_v){return _v===_key?"":_key})},style:{display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer",gap:"8px",flexWrap:"wrap"},children:[
@@ -108,7 +116,7 @@ _rp.non_faites.length===0?(0,i.jsx)("div",{style:{color:"#059669",fontSize:"13px
 (0,i.jsxs)("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center"},children:[
 (0,i.jsx)("span",{style:{fontWeight:500,color:c.text},children:_ch.label}),
 (0,i.jsx)("span",{style:{background:_ch.statut==="a_faire"?"#F3F4F6":"#FEF3C7",color:_ch.statut==="a_faire"?"#6B7280":"#D97706",padding:"2px 8px",borderRadius:"10px",fontSize:"11px"},children:_ch.statut==="a_faire"?"Non faite":"En cours"})]}),
-_ch.items_manquants&&_ch.items_manquants.length>0&&(0,i.jsx)("div",{style:{fontSize:"11px",color:c.textMuted,paddingTop:"3px"},children:"\u2717 "+_ch.items_manquants.join(", ")})]},_idx)})})]})]})}
+_ch.items_manquants&&_ch.items_manquants.length>0&&(0,i.jsx)("div",{style:{fontSize:"11px",color:c.textMuted,paddingTop:"3px"},children:"\u2717 "+_ch.items_manquants.join(", ")})]},_idx)})}),_rfRapFaites(_rp,_live,c,u)]})]})}
 function _rfRapHisto(_rv,_d,_sd,_open,_setOpen,c,u){var arr=_rv?(Array.isArray(_rv)?_rv:[_rv]):[];
 arr=arr.filter(function(r){return r&&r.date&&r.date!==_rfTodayIso()});
 if(!arr.length)return null;
@@ -614,4 +622,4 @@ lucide-react/dist/esm/lucide-react.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 */
-</script><div id="rf-lb" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:99999;align-items:center;justify-content:center;padding:16px"><img id="rf-lb-img" style="max-width:95%;max-height:95%;object-fit:contain;border-radius:8px"/><button onclick="event.stopPropagation();document.getElementById('rf-lb').style.display='none'" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.25);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:22px;cursor:pointer">✕</button></div><script>document.addEventListener('rf-lightbox',function(e){document.getElementById('rf-lb-img').src=e.detail;document.getElementById('rf-lb').style.display='flex';});</script><div id="rf-ver" style="position:fixed;bottom:2px;right:5px;font:10px system-ui,sans-serif;color:#94a3b8;opacity:.55;z-index:99999;pointer-events:none">v51 - historique des rapports illimite (table rapports)</div></body></html> 
+</script><div id="rf-lb" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:99999;align-items:center;justify-content:center;padding:16px"><img id="rf-lb-img" style="max-width:95%;max-height:95%;object-fit:contain;border-radius:8px"/><button onclick="event.stopPropagation();document.getElementById('rf-lb').style.display='none'" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.25);border:none;border-radius:50%;width:44px;height:44px;color:#fff;font-size:22px;cursor:pointer">✕</button></div><script>document.addEventListener('rf-lightbox',function(e){document.getElementById('rf-lb-img').src=e.detail;document.getElementById('rf-lb').style.display='flex';});</script><div id="rf-ver" style="position:fixed;bottom:2px;right:5px;font:10px system-ui,sans-serif;color:#94a3b8;opacity:.55;z-index:99999;pointer-events:none">v52 - rapport du jour : liste aussi les chambres terminees</div></body></html> 
